@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Reportes — DAAR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #0f2542;
+    --accent: #e8a12a;
+    --accent2:#f0c060;
+    --light:  #f5f3ee;
+    --light2: #ede9e0;
+    --white:  #ffffff;
+    --text:   #0f2542;
+    --muted:  #5a6e84;
+    --border: rgba(15,37,66,0.12);
+    --radius: 12px;
+    --shadow: 0 2px 16px rgba(15,37,66,0.08);
+  }
+
+  body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
+
+  header {
+    background: var(--navy); padding: 0 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px; box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .logo-area { display: flex; align-items: center; gap: 14px; }
+  .logo-mark {
+    width: 36px; height: 36px; background: var(--accent); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 14px; color: var(--navy); flex-shrink: 0;
+  }
+  .logo-text { color: #fff; font-size: 15px; font-weight: 500; line-height: 1.3; }
+  .logo-text span { display: block; font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.55); margin-top: 1px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    padding: 7px 16px; border-radius: 8px; border: 1px solid transparent;
+    cursor: pointer; transition: all 0.18s;
+  }
+  .btn-ghost { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.15); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.15); }
+  .btn-accent { background: var(--accent); color: var(--navy); border-color: var(--accent); font-weight: 600; }
+  .btn-accent:hover { background: var(--accent2); }
+  .btn-light { background: var(--white); color: var(--navy); border-color: var(--border); }
+  .btn-light:hover { background: var(--light2); }
+  .btn-danger { background: #fdecea; color: #a32d2d; border-color: #f0b0b0; font-size: 12px; padding: 5px 12px; }
+  .btn-danger:hover { background: #f7c1c1; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+
+  .page-title { font-size: 26px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .page-sub { font-size: 13px; color: var(--muted); margin-bottom: 1.75rem; }
+
+  .edit-banner {
+    display: none; background: #fff8e6; border: 1px solid #f5c960;
+    border-radius: var(--radius); padding: 10px 16px;
+    font-size: 13px; color: #7a5200; margin-bottom: 1.25rem;
+    align-items: center; gap: 8px;
+  }
+  .edit-banner.visible { display: flex; }
+
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .filter-btn {
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+    padding: 5px 15px; border-radius: 99px; border: 1px solid var(--border);
+    background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--navy); color: var(--navy); }
+  .filter-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+  #cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+
+  .report-card {
+    background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 8px;
+    box-shadow: var(--shadow); transition: box-shadow 0.18s, transform 0.15s;
+  }
+  .report-card:hover { box-shadow: 0 6px 24px rgba(15,37,66,0.12); transform: translateY(-1px); }
+  .report-card.edit-mode { border-color: #378add; box-shadow: 0 0 0 2px rgba(55,138,221,0.15); }
+
+  .area-badge {
+    display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+    padding: 3px 10px; border-radius: 99px; text-transform: uppercase; width: fit-content;
+  }
+  .card-title { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.35; }
+  .card-desc { font-size: 12px; color: var(--muted); line-height: 1.55; flex: 1; }
+  .card-open-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: #185fa5;
+    background: #e6f1fb; border: none; border-radius: 7px; padding: 6px 12px;
+    cursor: pointer; margin-top: 4px; transition: background 0.15s; text-decoration: none;
+  }
+  .card-open-btn:hover { background: #b5d4f4; }
+
+  .edit-label { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; display: block; }
+  .edit-field {
+    width: 100%; font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 6px 9px;
+    border: 1px solid var(--border); border-radius: 7px; background: var(--light);
+    color: var(--navy); margin-bottom: 8px; transition: border-color 0.15s;
+  }
+  .edit-field:focus { outline: none; border-color: #378add; background: #fff; }
+  textarea.edit-field { resize: vertical; line-height: 1.5; }
+
+  .add-card-placeholder {
+    background: transparent; border: 2px dashed var(--border); border-radius: var(--radius);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; padding: 1.5rem; cursor: pointer; transition: border-color 0.18s, background 0.18s;
+    color: var(--muted); font-size: 13px; min-height: 140px;
+  }
+  .add-card-placeholder:hover { border-color: var(--navy); background: rgba(15,37,66,0.03); color: var(--navy); }
+
+  .footer-row {
+    margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .footer-count { font-size: 12px; color: var(--muted); }
+
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(10,20,40,0.45); z-index: 200;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--white); border-radius: 16px; padding: 1.75rem 2rem;
+    width: 90%; max-width: 420px; box-shadow: 0 24px 60px rgba(10,20,40,0.2);
+    animation: slideUp 0.2s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .modal-title { font-size: 17px; font-weight: 600; color: var(--navy); margin-bottom: 1.25rem; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 1.25rem; }
+  .modal-error { font-size: 12px; color: #a32d2d; margin-top: -4px; margin-bottom: 8px; display: none; }
+  .modal-error.visible { display: block; }
+
+  .toast {
+    position: fixed; bottom: 1.5rem; right: 1.5rem;
+    background: var(--navy); color: #fff; font-size: 13px; padding: 10px 18px;
+    border-radius: 10px; opacity: 0; transform: translateY(8px);
+    transition: all 0.3s; z-index: 300; pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: none; }
+
+  @media (max-width: 600px) {
+    header { padding: 0 1rem; }
+    main { padding: 1.5rem 1rem 3rem; }
+    .page-title { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <div class="logo-mark">UP</div>
+    <div class="logo-text">
+      Portal de Reportes
+      <span>Dirección de Asuntos Académicos y Registro</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <button class="btn btn-ghost" id="btn-edit" onclick="openPasswordModal()">✏️ Editar</button>
+    <button class="btn btn-accent" id="btn-save" onclick="saveChanges()" style="display:none;">✓ Guardar</button>
+    <button class="btn btn-ghost" id="btn-cancel" onclick="cancelEdit()" style="display:none;">✕ Cancelar</button>
+  </div>
+</header>
+
+<main>
+  <div class="page-title">Reportes de gestión</div>
+  <div class="page-sub">Haz clic en cualquier reporte para abrirlo en Google Drive</div>
+
+  <div class="edit-banner" id="edit-banner">
+    ✏️ <strong>Modo edición activo</strong> — modifica títulos, descripciones, áreas y links. Presiona "Guardar" al terminar.
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterArea(this,'all')">Todos</button>
+    <button class="filter-btn" onclick="filterArea(this,'Pregrado')">Pregrado</button>
+    <button class="filter-btn" onclick="filterArea(this,'Posgrado')">Posgrado</button>
+    <button class="filter-btn" onclick="filterArea(this,'Idiomas')">Idiomas</button>
+    <button class="filter-btn" onclick="filterArea(this,'Jefaturas')">Jefaturas</button>
+  </div>
+
+  <div id="cards-grid"></div>
+
+  <div class="footer-row">
+    <button class="btn btn-light" id="btn-add" onclick="openAddModal()" style="display:none;">+ Agregar reporte</button>
+    <div class="footer-count" id="footer-count"></div>
+  </div>
+</main>
+
+<!-- Modal: contraseña -->
+<div class="modal-overlay" id="modal-password">
+  <div class="modal">
+    <div class="modal-title">🔒 Acceso de edición</div>
+    <label class="edit-label">Contraseña</label>
+    <input class="edit-field" id="input-password" type="password" placeholder="Ingresa tu contraseña"
+      onkeydown="if(event.key==='Enter') checkPassword()">
+    <div class="modal-error" id="password-error">Contraseña incorrecta. Inténtalo de nuevo.</div>
+    <div class="modal-actions">
+      <button class="btn btn-light" onclick="closeModal('modal-password')">Cancelar</button>
+      <button class="btn btn-accent" onclick="checkPassword()">Ingresar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: agregar reporte -->
+<div class="modal-overlay" id="modal-add">
+  <div class="modal">
+    <div class="modal-title">Nuevo reporte</div>
+    <label class="edit-label">Área</label>
+    <select class="edit-field" id="new-area">
+      <option>Pregrado</option><option>Posgrado</option><option>Idiomas</option><option>Jefaturas</option>
+    </select>
+    <label class="edit-label">Título</label>
+    <input class="edit-field" id="new-title" type="text" placeholder="Ej. Matrícula Pregrado">
+    <label class="edit-label">Descripción breve</label>
+    <textarea class="edit-field" id="new-desc" rows="2" placeholder="Ej. Reporte de matrículas activas por ciclo."></textarea>
+    <label class="edit-label">Link de Google Drive</label>
+    <input class="edit-field" id="new-link" type="url" placeholder="https://drive.google.com/...">
+    <div class="modal-actions">
+      <button class="btn btn-light" onclick="closeModal('modal-add')">Cancelar</button>
+      <button class="btn btn-accent" onclick="confirmAdd()">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PASSWORD = 'Covid26@';
+
+const AREA_STYLE = {
+  Pregrado:  { bg:'#e6f0fb', color:'#0c3a6e' },
+  Posgrado:  { bg:'#eeedfe', color:'#3c3489' },
+  Idiomas:   { bg:'#eaf3de', color:'#27500a' },
+  Jefaturas: { bg:'#faeeda', color:'#633806' },
+};
+
+const STORAGE_KEY = 'daar_portal_reports';
+
+const DEFAULT_REPORTS = [
+  { id:1, area:'Pregrado',  title:'Matrícula Pregrado',           desc:'Reporte de matrículas activas por ciclo y carrera.',            link:'https://drive.google.com' },
+  { id:2, area:'Pregrado',  title:'Reservas de Aulas',            desc:'Estado de reservas y ocupación de aulas por semana.',           link:'https://drive.google.com' },
+  { id:3, area:'Posgrado',  title:'Matrículas Posgrado',          desc:'Seguimiento de matrícula inicial, recurrente y extraordinaria.',link:'https://drive.google.com' },
+  { id:4, area:'Posgrado',  title:'Certificaciones EGP',          desc:'Estado de certificaciones por empresa y subunidad.',           link:'https://drive.google.com' },
+  { id:5, area:'Idiomas',   title:'Avance Idiomas',               desc:'KPIs de progreso por nivel e idioma.',                         link:'https://drive.google.com' },
+  { id:6, area:'Jefaturas', title:'Horas Extra y Compensatorias', desc:'Control mensual por área y colaborador.',                      link:'https://drive.google.com' },
+  { id:7, area:'Jefaturas', title:'KPIs Generales DAAR',          desc:'Dashboard ejecutivo con indicadores clave de gestión.',        link:'https://drive.google.com' },
+  { id:8, area:'Posgrado',  title:'Certificaciones PBS',          desc:'Reporte de empresas prioritarias y avance de programas.',      link:'https://drive.google.com' },
+];
+
+function loadReports() {
+  try { const s = localStorage.getItem(STORAGE_KEY); return s ? JSON.parse(s) : JSON.parse(JSON.stringify(DEFAULT_REPORTS)); }
+  catch(e) { return JSON.parse(JSON.stringify(DEFAULT_REPORTS)); }
+}
+function persistReports(data) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+let reports = loadReports();
+let editMode = false;
+let currentFilter = 'all';
+let editBuffer = [];
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function getFiltered() {
+  return currentFilter === 'all' ? reports : reports.filter(r => r.area === currentFilter);
+}
+
+function renderCards() {
+  const grid = document.getElementById('cards-grid');
+  const filtered = getFiltered();
+  document.getElementById('footer-count').textContent =
+    filtered.length + ' reporte' + (filtered.length !== 1 ? 's' : '') + ' · DAAR UP';
+  grid.innerHTML = '';
+
+  filtered.forEach(r => {
+    const st = AREA_STYLE[r.area] || AREA_STYLE['Jefaturas'];
+    const card = document.createElement('div');
+    card.className = 'report-card' + (editMode ? ' edit-mode' : '');
+
+    if (!editMode) {
+      card.innerHTML = `
+        <span class="area-badge" style="background:${st.bg};color:${st.color};">${r.area}</span>
+        <div class="card-title">${esc(r.title)}</div>
+        <div class="card-desc">${esc(r.desc)}</div>
+        <a class="card-open-btn" href="${esc(r.link)}" target="_blank" rel="noopener">↗ Abrir reporte</a>`;
+    } else {
+      const buf = editBuffer.find(x => x.id === r.id) || r;
+      card.innerHTML = `
+        <label class="edit-label">Área</label>
+        <select class="edit-field" onchange="updateBuf(${r.id},'area',this.value)">
+          ${Object.keys(AREA_STYLE).map(a=>`<option value="${a}"${buf.area===a?' selected':''}>${a}</option>`).join('')}
+        </select>
+        <label class="edit-label">Título</label>
+        <input class="edit-field" type="text" value="${esc(buf.title)}" oninput="updateBuf(${r.id},'title',this.value)">
+        <label class="edit-label">Descripción</label>
+        <textarea class="edit-field" rows="2" oninput="updateBuf(${r.id},'desc',this.value)">${esc(buf.desc)}</textarea>
+        <label class="edit-label">Link de Google Drive</label>
+        <input class="edit-field" type="url" value="${esc(buf.link)}" oninput="updateBuf(${r.id},'link',this.value)" placeholder="https://drive.google.com/...">
+        <button class="btn btn-danger" onclick="deleteCard(${r.id})">🗑 Eliminar</button>`;
+    }
+    grid.appendChild(card);
+  });
+
+  if (editMode) {
+    const ph = document.createElement('div');
+    ph.className = 'add-card-placeholder';
+    ph.onclick = openAddModal;
+    ph.innerHTML = `<div style="font-size:28px;opacity:0.4;">＋</div><span>Agregar reporte</span>`;
+    grid.appendChild(ph);
+  }
+}
+
+function updateBuf(id, field, val) {
+  let e = editBuffer.find(x => x.id === id);
+  if (!e) { e = {...reports.find(r => r.id === id)}; editBuffer.push(e); }
+  e[field] = val;
+}
+
+function openPasswordModal() {
+  document.getElementById('input-password').value = '';
+  document.getElementById('password-error').classList.remove('visible');
+  document.getElementById('modal-password').classList.add('open');
+  setTimeout(() => document.getElementById('input-password').focus(), 100);
+}
+
+function checkPassword() {
+  const val = document.getElementById('input-password').value;
+  if (val === PASSWORD) {
+    closeModal('modal-password');
+    startEdit();
+  } else {
+    document.getElementById('password-error').classList.add('visible');
+    document.getElementById('input-password').value = '';
+    document.getElementById('input-password').focus();
+  }
+}
+
+function startEdit() {
+  editMode = true;
+  editBuffer = reports.map(r => ({...r}));
+  document.getElementById('btn-edit').style.display = 'none';
+  document.getElementById('btn-save').style.display = '';
+  document.getElementById('btn-cancel').style.display = '';
+  document.getElementById('btn-add').style.display = '';
+  document.getElementById('edit-banner').classList.add('visible');
+  renderCards();
+}
+
+function saveChanges() {
+  editBuffer.forEach(buf => {
+    const idx = reports.findIndex(r => r.id === buf.id);
+    if (idx !== -1) reports[idx] = {...buf};
+  });
+  persistReports(reports);
+  exitEdit();
+  showToast('✓ Cambios guardados correctamente');
+}
+
+function cancelEdit() { reports = loadReports(); exitEdit(); }
+
+function exitEdit() {
+  editMode = false; editBuffer = [];
+  document.getElementById('btn-edit').style.display = '';
+  document.getElementById('btn-save').style.display = 'none';
+  document.getElementById('btn-cancel').style.display = 'none';
+  document.getElementById('btn-add').style.display = 'none';
+  document.getElementById('edit-banner').classList.remove('visible');
+  renderCards();
+}
+
+function deleteCard(id) {
+  if (!confirm('¿Eliminar este reporte?')) return;
+  reports = reports.filter(r => r.id !== id);
+  editBuffer = editBuffer.filter(x => x.id !== id);
+  renderCards();
+}
+
+function filterArea(btn, area) {
+  currentFilter = area;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards();
+}
+
+function openAddModal() {
+  document.getElementById('new-title').value = '';
+  document.getElementById('new-desc').value = '';
+  document.getElementById('new-link').value = '';
+  document.getElementById('modal-add').classList.add('open');
+  setTimeout(() => document.getElementById('new-title').focus(), 100);
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function confirmAdd() {
+  const title = document.getElementById('new-title').value.trim();
+  const link  = document.getElementById('new-link').value.trim();
+  if (!title) { alert('Por favor ingresa un título.'); return; }
+  if (!link)  { alert('Por favor ingresa el link de Drive.'); return; }
+  const newR = { id: Date.now(), area: document.getElementById('new-area').value, title, desc: document.getElementById('new-desc').value.trim(), link };
+  reports.push(newR);
+  editBuffer.push({...newR});
+  closeModal('modal-add');
+  renderCards();
+}
+
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+renderCards();
+</script>
+</body>
+</html>
