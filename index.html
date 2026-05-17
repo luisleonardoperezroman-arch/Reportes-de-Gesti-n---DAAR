@@ -152,7 +152,7 @@ header {
 /* ── HERO ── */
 .hero {
   background: var(--navy);
-  padding: 3.5rem 3rem 4rem;
+  padding: 2rem 3rem 2.5rem;
   position: relative;
   overflow: hidden;
 }
@@ -188,14 +188,19 @@ header {
   display: block; width: 20px; height: 1px;
   background: rgba(255,255,255,0.35);
 }
+.hero-label::after {
+  content: '';
+  display: block; width: 20px; height: 1px;
+  background: rgba(255,255,255,0.35);
+}
 
 .hero-title {
   font-family: 'Outfit', sans-serif;
-  font-size: 40px; font-weight: 700;
+  font-size: 32px; font-weight: 700;
   color: #ffffff;
   line-height: 1.1;
   letter-spacing: -1px;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .hero-sub {
@@ -464,7 +469,7 @@ textarea.edit-field { resize: vertical; line-height: 1.55; }
   <div class="hero-inner">
     <div class="hero-label">Universidad del Pacífico</div>
     <h1 class="hero-title">Reportes de gestión</h1>
-    <p class="hero-sub">Accede a los reportes operativos de cada unidad. Haz clic en el reporte que necesitas para abrirlo en Google Drive.</p>
+    <p class="hero-sub">Accede a los reportes operativos de cada unidad. Haz clic en el reporte que necesitas para abrirlo.</p>
   </div>
 </div>
 
@@ -557,10 +562,10 @@ textarea.edit-field { resize: vertical; line-height: 1.55; }
 const PASSWORD = 'Covid26@';
 
 const AREA_STYLE = {
-  Pregrado:  { bg:'#E8EFF9', color:'#002F6C' },
-  Posgrado:  { bg:'#E4EBF7', color:'#00256A' },
-  Idiomas:   { bg:'#D8E8F5', color:'#004A8C' },
-  Jefaturas: { bg:'#E0EAFA', color:'#1A3A6E' },
+  Pregrado:  { bg:'#DDEEFF', color:'#003A80' },
+  Posgrado:  { bg:'#E0D8F8', color:'#3A1F8A' },
+  Idiomas:   { bg:'#D4EFE0', color:'#0A5C30' },
+  Jefaturas: { bg:'#FDEFD4', color:'#7A4200' },
 };
 
 // ══ DATOS DE REPORTES — se reemplaza automáticamente al descargar ══
