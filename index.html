@@ -193,38 +193,49 @@
   <div class="filter-bar">
     <button class="filter-btn" onclick="filterArea(this,'all')">Todos</button>
     <button class="filter-btn" onclick="filterArea(this,'Pregrado')">Pregrado</button>
-    <button class="filter-btn" onclick="filterArea(this,'Posgrado')">Posgrado</button>
+    <button class="filter-btn active" onclick="filterArea(this,'Posgrado')">Posgrado</button>
     <button class="filter-btn" onclick="filterArea(this,'Idiomas')">Idiomas</button>
-    <button class="filter-btn active" onclick="filterArea(this,'Jefaturas')">Jefaturas</button>
+    <button class="filter-btn" onclick="filterArea(this,'Jefaturas')">Jefaturas</button>
   </div>
 
   <div id="cards-grid"><div class="report-card edit-mode">
         <label class="edit-label">Área</label>
-        <select class="edit-field" onchange="updateBuf(6,'area',this.value)">
-          <option value="Pregrado">Pregrado</option><option value="Posgrado">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas" selected="">Jefaturas</option>
+        <select class="edit-field" onchange="updateBuf(3,'area',this.value)">
+          <option value="Pregrado">Pregrado</option><option value="Posgrado" selected="">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas">Jefaturas</option>
         </select>
         <label class="edit-label">Título</label>
-        <input class="edit-field" type="text" value="Horas Extra y Compensatorias" oninput="updateBuf(6,'title',this.value)">
+        <input class="edit-field" type="text" value="Matrículas Posgrado - EEPBS" oninput="updateBuf(3,'title',this.value)">
         <label class="edit-label">Descripción</label>
-        <textarea class="edit-field" rows="2" oninput="updateBuf(6,'desc',this.value)">Control mensual por área y colaborador.</textarea>
+        <textarea class="edit-field" rows="2" oninput="updateBuf(3,'desc',this.value)">Seguimiento de matrícula inicial, recurrente y extraordinaria.</textarea>
         <label class="edit-label">Link de Google Drive</label>
-        <input class="edit-field" type="url" value="https://drive.google.com" oninput="updateBuf(6,'link',this.value)" placeholder="https://drive.google.com/...">
-        <button class="btn btn-danger" onclick="deleteCard(6)">🗑 Eliminar</button></div><div class="report-card edit-mode">
+        <input class="edit-field" type="url" value="https://docs.google.com/spreadsheets/d/1f2x_FC-cmna4S_rD78Y6foiaEz1L7HPV/edit?usp=sharing&amp;ouid=100123688016050204607&amp;rtpof=true&amp;sd=true" oninput="updateBuf(3,'link',this.value)" placeholder="https://drive.google.com/...">
+        <button class="btn btn-danger" onclick="deleteCard(3)">🗑 Eliminar</button></div><div class="report-card edit-mode">
         <label class="edit-label">Área</label>
-        <select class="edit-field" onchange="updateBuf(7,'area',this.value)">
-          <option value="Pregrado">Pregrado</option><option value="Posgrado">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas" selected="">Jefaturas</option>
+        <select class="edit-field" onchange="updateBuf(4,'area',this.value)">
+          <option value="Pregrado">Pregrado</option><option value="Posgrado" selected="">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas">Jefaturas</option>
         </select>
         <label class="edit-label">Título</label>
-        <input class="edit-field" type="text" value="KPIs Generales DAAR" oninput="updateBuf(7,'title',this.value)">
+        <input class="edit-field" type="text" value="Certificaciones Educación Ejecutiva" oninput="updateBuf(4,'title',this.value)">
         <label class="edit-label">Descripción</label>
-        <textarea class="edit-field" rows="2" oninput="updateBuf(7,'desc',this.value)">Dashboard ejecutivo con indicadores clave de gestión.</textarea>
+        <textarea class="edit-field" rows="2" oninput="updateBuf(4,'desc',this.value)">Estado de certificaciones por subunidad.</textarea>
         <label class="edit-label">Link de Google Drive</label>
-        <input class="edit-field" type="url" value="https://drive.google.com" oninput="updateBuf(7,'link',this.value)" placeholder="https://drive.google.com/...">
-        <button class="btn btn-danger" onclick="deleteCard(7)">🗑 Eliminar</button></div><div class="add-card-placeholder"><div style="font-size:28px;opacity:0.4;">＋</div><span>Agregar reporte</span></div></div>
+        <input class="edit-field" type="url" value="https://docs.google.com/spreadsheets/d/1ky3MfRn9GMsG-0JlRklybj1PDLuwcak7/edit?usp=sharing&amp;ouid=100123688016050204607&amp;rtpof=true&amp;sd=true" oninput="updateBuf(4,'link',this.value)" placeholder="https://drive.google.com/...">
+        <button class="btn btn-danger" onclick="deleteCard(4)">🗑 Eliminar</button></div><div class="report-card edit-mode">
+        <label class="edit-label">Área</label>
+        <select class="edit-field" onchange="updateBuf(8,'area',this.value)">
+          <option value="Pregrado">Pregrado</option><option value="Posgrado" selected="">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas">Jefaturas</option>
+        </select>
+        <label class="edit-label">Título</label>
+        <input class="edit-field" type="text" value="Programación de clases" oninput="updateBuf(8,'title',this.value)">
+        <label class="edit-label">Descripción</label>
+        <textarea class="edit-field" rows="2" oninput="updateBuf(8,'desc',this.value)">Estado de las solicitudes de programación de aulas</textarea>
+        <label class="edit-label">Link de Google Drive</label>
+        <input class="edit-field" type="url" value="https://docs.google.com/spreadsheets/d/1HE39C9m4n0Uq5-KFokusBeJob7py9kl7/edit?usp=sharing&amp;ouid=100123688016050204607&amp;rtpof=true&amp;sd=true" oninput="updateBuf(8,'link',this.value)" placeholder="https://drive.google.com/...">
+        <button class="btn btn-danger" onclick="deleteCard(8)">🗑 Eliminar</button></div><div class="add-card-placeholder"><div style="font-size:28px;opacity:0.4;">＋</div><span>Agregar reporte</span></div></div>
 
   <div class="footer-row">
     <button class="btn btn-light" id="btn-add" onclick="openAddModal()" style="">+ Agregar reporte</button>
-    <div class="footer-count" id="footer-count">2 reportes · DAAR UP</div>
+    <div class="footer-count" id="footer-count">3 reportes · DAAR UP</div>
   </div>
 </main>
 
@@ -286,6 +297,7 @@ let reports = [
   { id:7, area:'Jefaturas', title:'KPIs Generales DAAR', desc:'Dashboard ejecutivo con indicadores clave de gestión.', link:'https://drive.google.com' },
   { id:8, area:'Posgrado', title:'Programación de clases', desc:'Estado de las solicitudes de programación de aulas', link:'https://docs.google.com/spreadsheets/d/1HE39C9m4n0Uq5-KFokusBeJob7py9kl7/edit?usp=sharing&ouid=100123688016050204607&rtpof=true&sd=true' }
 ];
+
 
 
 let editMode = false;
