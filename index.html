@@ -1,312 +1,536 @@
-<!DOCTYPE html><html lang="es"><head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portal de Reportes — DAAR</title>
+<title>Portal de Reportes — DAAR · UP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --navy:#0f2542; --accent:#e8a12a; --accent2:#f0c060;
-    --light:#f5f3ee; --light2:#ede9e0; --white:#ffffff;
-    --text:#0f2542; --muted:#5a6e84; --border:rgba(15,37,66,0.12);
-    --radius:12px; --shadow:0 2px 16px rgba(15,37,66,0.08);
-  }
-  body { font-family:'DM Sans',sans-serif; background:var(--light); color:var(--text); min-height:100vh; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  header {
-    background:var(--navy); padding:0 2.5rem;
-    display:flex; align-items:center; justify-content:space-between;
-    height:64px; box-shadow:0 1px 0 rgba(255,255,255,0.06);
-  }
-  .logo-area { display:flex; align-items:center; gap:14px; }
-  .logo-mark {
-    width:36px; height:36px; background:var(--accent); border-radius:8px;
-    display:flex; align-items:center; justify-content:center;
-    font-weight:600; font-size:14px; color:var(--navy); flex-shrink:0;
-  }
-  .logo-text { color:#fff; font-size:15px; font-weight:500; line-height:1.3; }
-  .logo-text span { display:block; font-size:11px; font-weight:300; color:rgba(255,255,255,0.55); margin-top:1px; }
+:root {
+  /* UP Brand */
+  --navy:      #002F6C;
+  --navy-mid:  #003F8A;
+  --navy-soft: #EEF3FA;
+  --navy-pale: #F5F8FD;
 
-  .btn {
-    display:inline-flex; align-items:center; gap:7px;
-    font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500;
-    padding:7px 16px; border-radius:8px; border:1px solid transparent;
-    cursor:pointer; transition:all 0.18s;
-  }
-  .btn-ghost { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.85); border-color:rgba(255,255,255,0.15); }
-  .btn-ghost:hover { background:rgba(255,255,255,0.15); }
-  .btn-accent { background:var(--accent); color:var(--navy); border-color:var(--accent); font-weight:600; }
-  .btn-accent:hover { background:var(--accent2); }
-  .btn-light { background:var(--white); color:var(--navy); border-color:var(--border); }
-  .btn-light:hover { background:var(--light2); }
-  .btn-danger { background:#fdecea; color:#a32d2d; border-color:#f0b0b0; font-size:12px; padding:5px 12px; }
-  .btn-danger:hover { background:#f7c1c1; }
+  /* Neutrals */
+  --white:     #ffffff;
+  --bg:        #F2F4F8;
+  --surface:   #ffffff;
+  --border:    rgba(0,47,108,0.10);
+  --border-mid:rgba(0,47,108,0.18);
 
-  main { max-width:1100px; margin:0 auto; padding:2.5rem 2rem 4rem; }
-  .page-title { font-size:26px; font-weight:600; color:var(--navy); margin-bottom:4px; }
-  .page-sub { font-size:13px; color:var(--muted); margin-bottom:1.75rem; }
+  /* Text */
+  --text-primary:   #0A1C35;
+  --text-secondary: #4A607A;
+  --text-muted:     #8096B0;
 
-  .edit-banner {
-    display:none; background:#fff8e6; border:1px solid #f5c960;
-    border-radius:var(--radius); padding:10px 16px;
-    font-size:13px; color:#7a5200; margin-bottom:1.25rem;
-    align-items:center; gap:8px;
-  }
-  .edit-banner.visible { display:flex; }
+  /* Area accents — all within UP palette */
+  --pre-bg: #E8EFF9;  --pre-c: #002F6C;
+  --pos-bg: #E4EBF7;  --pos-c: #00256A;
+  --idi-bg: #D8E8F5;  --idi-c: #004A8C;
+  --jef-bg: #E0EAFA;  --jef-c: #1A3A6E;
 
-  .download-banner {
-    display:none; background:#e6f4ea; border:1px solid #7ac98a;
-    border-radius:var(--radius); padding:14px 18px;
-    font-size:13px; color:#1a5c2a; margin-bottom:1.25rem;
-    flex-direction:column; gap:6px;
-  }
-  .download-banner.visible { display:flex; }
-  .download-banner strong { font-size:14px; }
-  .download-steps { margin:4px 0 0 12px; line-height:1.9; }
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 4px rgba(0,47,108,0.06);
+  --shadow-md: 0 4px 20px rgba(0,47,108,0.09);
+  --shadow-lg: 0 12px 40px rgba(0,47,108,0.13);
+}
 
-  .filter-bar { display:flex; gap:8px; margin-bottom:1.5rem; flex-wrap:wrap; }
-  .filter-btn {
-    font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500;
-    padding:5px 15px; border-radius:99px; border:1px solid var(--border);
-    background:transparent; color:var(--muted); cursor:pointer; transition:all 0.15s;
-  }
-  .filter-btn:hover { border-color:var(--navy); color:var(--navy); }
-  .filter-btn.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
 
-  #cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; }
+/* ── HEADER ── */
+header {
+  background: var(--navy);
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
 
-  .report-card {
-    background:var(--white); border:1px solid var(--border); border-radius:var(--radius);
-    padding:1.1rem 1.2rem; display:flex; flex-direction:column; gap:8px;
-    box-shadow:var(--shadow); transition:box-shadow 0.18s,transform 0.15s;
-  }
-  .report-card:hover { box-shadow:0 6px 24px rgba(15,37,66,0.12); transform:translateY(-1px); }
+.header-left { display: flex; align-items: center; gap: 16px; }
 
-  .area-badge {
-    display:inline-block; font-size:10px; font-weight:600; letter-spacing:0.5px;
-    padding:3px 10px; border-radius:99px; text-transform:uppercase; width:fit-content;
-  }
-  .card-title { font-size:14px; font-weight:600; color:var(--navy); line-height:1.35; }
-  .card-desc { font-size:12px; color:var(--muted); line-height:1.55; flex:1; }
-  .card-open-btn {
-    display:inline-flex; align-items:center; gap:6px;
-    font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; color:#185fa5;
-    background:#e6f1fb; border:none; border-radius:7px; padding:6px 12px;
-    cursor:pointer; margin-top:4px; transition:background 0.15s; text-decoration:none;
-  }
-  .card-open-btn:hover { background:#b5d4f4; }
+.up-badge {
+  width: 40px; height: 40px;
+  background: #ffffff;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.up-badge span {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700; font-size: 16px;
+  color: var(--navy);
+  letter-spacing: -0.5px;
+}
 
-  .edit-label { font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; display:block; }
-  .edit-field {
-    width:100%; font-family:'DM Sans',sans-serif; font-size:12px; padding:6px 9px;
-    border:1px solid var(--border); border-radius:7px; background:var(--light);
-    color:var(--navy); margin-bottom:8px; transition:border-color 0.15s;
-  }
-  .edit-field:focus { outline:none; border-color:#378add; background:#fff; }
-  textarea.edit-field { resize:vertical; line-height:1.5; }
+.header-title {
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  line-height: 1.25;
+}
+.header-title small {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.52);
+  margin-top: 2px;
+  letter-spacing: 0;
+}
 
-  .add-card-placeholder {
-    background:transparent; border:2px dashed var(--border); border-radius:var(--radius);
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:8px; padding:1.5rem; cursor:pointer; transition:border-color 0.18s,background 0.18s;
-    color:var(--muted); font-size:13px; min-height:140px;
-  }
-  .add-card-placeholder:hover { border-color:var(--navy); background:rgba(15,37,66,0.03); color:var(--navy); }
+.header-sep {
+  width: 1px; height: 28px;
+  background: rgba(255,255,255,0.15);
+}
 
-  .footer-row {
-    margin-top:2rem; padding-top:1.25rem; border-top:1px solid var(--border);
-    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
-  }
-  .footer-count { font-size:12px; color:var(--muted); }
+.header-tag {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
 
-  .modal-overlay {
-    display:none; position:fixed; inset:0;
-    background:rgba(10,20,40,0.45); z-index:200;
-    align-items:center; justify-content:center;
-  }
-  .modal-overlay.open { display:flex; }
-  .modal {
-    background:var(--white); border-radius:16px; padding:1.75rem 2rem;
-    width:90%; max-width:420px; box-shadow:0 24px 60px rgba(10,20,40,0.2);
-    animation:slideUp 0.2s ease;
-  }
-  @keyframes slideUp { from{transform:translateY(16px);opacity:0} to{transform:none;opacity:1} }
-  .modal-title { font-size:17px; font-weight:600; color:var(--navy); margin-bottom:1.25rem; }
-  .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:1.25rem; }
-  .modal-error { font-size:12px; color:#a32d2d; margin-top:-4px; margin-bottom:8px; display:none; }
-  .modal-error.visible { display:block; }
+/* ── BOTONES ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500;
+  padding: 8px 18px; border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer; transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-outline {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.82);
+  border-color: rgba(255,255,255,0.18);
+}
+.btn-outline:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); }
 
-  .toast {
-    position:fixed; bottom:1.5rem; right:1.5rem;
-    background:var(--navy); color:#fff; font-size:13px; padding:10px 18px;
-    border-radius:10px; opacity:0; transform:translateY(8px);
-    transition:all 0.3s; z-index:300; pointer-events:none;
-  }
-  .toast.show { opacity:1; transform:none; }
+.btn-primary {
+  background: #fff;
+  color: var(--navy);
+  border-color: #fff;
+  font-weight: 600;
+}
+.btn-primary:hover { background: #E8EFF9; }
 
-  @media(max-width:600px){
-    header{padding:0 1rem;} main{padding:1.5rem 1rem 3rem;} .page-title{font-size:20px;}
-  }
+.btn-light {
+  background: var(--surface);
+  color: var(--navy);
+  border-color: var(--border-mid);
+  font-size: 13px;
+}
+.btn-light:hover { background: var(--navy-soft); }
+
+.btn-danger {
+  background: #FEF0EE; color: #B03020;
+  border-color: #F5C5BF; font-size: 12px; padding: 5px 12px;
+}
+.btn-danger:hover { background: #FDDAD6; }
+
+/* ── HERO ── */
+.hero {
+  background: var(--navy);
+  padding: 3.5rem 3rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: 30%;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.03);
+  pointer-events: none;
+}
+
+.hero-inner { max-width: 1060px; margin: 0 auto; position: relative; z-index: 1; }
+
+.hero-label {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; font-weight: 500; letter-spacing: 1.2px;
+  text-transform: uppercase; color: rgba(255,255,255,0.5);
+  margin-bottom: 1rem;
+}
+.hero-label::before {
+  content: '';
+  display: block; width: 20px; height: 1px;
+  background: rgba(255,255,255,0.35);
+}
+
+.hero-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 40px; font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  margin-bottom: 0.75rem;
+}
+
+.hero-sub {
+  font-size: 15px; color: rgba(255,255,255,0.55);
+  font-weight: 400; line-height: 1.6;
+  max-width: 480px;
+}
+
+/* ── CONTENT ── */
+.content { max-width: 1060px; margin: 0 auto; padding: 2.5rem 3rem 5rem; }
+
+/* ── BANNERS ── */
+.banner {
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  font-size: 13px;
+  margin-bottom: 1.5rem;
+  display: none; align-items: flex-start; gap: 10px;
+}
+.banner.visible { display: flex; }
+.banner-edit {
+  background: #FFF8E6; border: 1px solid #F0D070; color: #7A5200;
+}
+.banner-download {
+  background: #E8F5EE; border: 1px solid #80C9A0; color: #1A5C30;
+  flex-direction: column; gap: 8px;
+}
+.banner-download strong { font-size: 14px; font-weight: 600; }
+.banner-steps { margin: 2px 0 0 2px; line-height: 2; font-size: 13px; }
+.banner-steps li { padding-left: 4px; }
+.banner-note { font-size: 12px; color: #2E7D42; margin-top: 2px; }
+
+/* ── FILTROS ── */
+.filter-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.75rem; flex-wrap: wrap; gap: 12px;
+}
+.filters { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.filter-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px; font-weight: 500;
+  padding: 6px 16px; border-radius: 99px;
+  border: 1px solid var(--border-mid);
+  background: var(--surface); color: var(--text-secondary);
+  cursor: pointer; transition: all 0.18s;
+}
+.filter-btn:hover { border-color: var(--navy); color: var(--navy); background: var(--navy-soft); }
+.filter-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+.count-label {
+  font-size: 12px; color: var(--text-muted);
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── GRID ── */
+#cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+/* ── CARD ── */
+.report-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.4rem 1.5rem;
+  display: flex; flex-direction: column; gap: 10px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.22s, transform 0.18s, border-color 0.18s;
+  animation: fadeUp 0.35s ease both;
+}
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(10px); }
+  to   { opacity:1; transform: none; }
+}
+.report-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+  border-color: var(--border-mid);
+}
+.report-card.edit-mode {
+  border-color: #4A90D9;
+  box-shadow: 0 0 0 3px rgba(74,144,217,0.12), var(--shadow-sm);
+}
+
+.area-badge {
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.7px;
+  text-transform: uppercase;
+  padding: 3px 10px; border-radius: 99px;
+  width: fit-content;
+}
+
+.card-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.card-desc {
+  font-size: 12.5px; color: var(--text-secondary);
+  line-height: 1.6; flex: 1;
+}
+
+.card-divider {
+  height: 1px; background: var(--border); margin: 2px 0;
+}
+
+.card-open-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px; font-weight: 500;
+  color: var(--navy);
+  background: var(--navy-soft);
+  border: 1px solid rgba(0,47,108,0.12);
+  border-radius: var(--radius-sm);
+  padding: 7px 13px;
+  cursor: pointer; text-decoration: none;
+  transition: background 0.18s, border-color 0.18s;
+  margin-top: 2px;
+}
+.card-open-btn:hover { background: #D4E2F5; border-color: rgba(0,47,108,0.25); }
+.card-open-btn svg { flex-shrink: 0; }
+
+/* ── EDIT FIELDS ── */
+.edit-label {
+  display: block;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.6px;
+  text-transform: uppercase; color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.edit-field {
+  width: 100%; font-family: 'DM Sans', sans-serif;
+  font-size: 12.5px; padding: 7px 10px;
+  border: 1px solid var(--border-mid); border-radius: var(--radius-sm);
+  background: var(--bg); color: var(--text-primary);
+  margin-bottom: 10px; transition: border-color 0.15s, background 0.15s;
+}
+.edit-field:focus { outline: none; border-color: #4A90D9; background: #fff; }
+textarea.edit-field { resize: vertical; line-height: 1.55; }
+
+/* ── ADD PLACEHOLDER ── */
+.add-placeholder {
+  background: transparent;
+  border: 2px dashed var(--border-mid);
+  border-radius: var(--radius-md);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 10px; padding: 2rem;
+  cursor: pointer; min-height: 160px;
+  transition: border-color 0.18s, background 0.18s;
+  color: var(--text-muted); font-size: 13px;
+}
+.add-placeholder:hover {
+  border-color: var(--navy);
+  background: var(--navy-soft);
+  color: var(--navy);
+}
+.add-plus {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 300; color: var(--text-muted);
+  transition: background 0.18s, color 0.18s;
+}
+.add-placeholder:hover .add-plus { background: var(--navy); color: #fff; }
+
+/* ── FOOTER ── */
+.footer-row {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px;
+}
+.footer-meta { font-size: 12px; color: var(--text-muted); }
+
+/* ── MODALES ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,20,50,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 200; align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border-radius: var(--radius-lg);
+  padding: 2rem 2.25rem; width: 92%; max-width: 440px;
+  box-shadow: 0 32px 80px rgba(0,20,50,0.22);
+  animation: modalIn 0.22s ease;
+}
+@keyframes modalIn { from{transform:translateY(18px);opacity:0} to{transform:none;opacity:1} }
+
+.modal-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px; font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.4rem;
+}
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 1.4rem; }
+.modal-error {
+  font-size: 12px; color: #B03020;
+  background: #FEF0EE; border-radius: 6px;
+  padding: 6px 10px; margin-top: -6px; margin-bottom: 10px;
+  display: none;
+}
+.modal-error.visible { display: block; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 2rem; right: 2rem;
+  background: var(--navy); color: #fff;
+  font-size: 13px; font-weight: 500;
+  padding: 11px 20px; border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0; transform: translateY(10px);
+  transition: all 0.3s; z-index: 300; pointer-events: none;
+}
+.toast.show { opacity: 1; transform: none; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  header { padding: 0 1.25rem; }
+  .hero { padding: 2.5rem 1.25rem 3rem; }
+  .hero-title { font-size: 28px; }
+  .content { padding: 2rem 1.25rem 4rem; }
+  .header-sep, .header-tag { display: none; }
+}
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
-  <div class="logo-area">
-    <div class="logo-mark">UP</div>
-    <div class="logo-text">
+  <div class="header-left">
+    <div class="up-badge"><span>UP</span></div>
+    <div class="header-title">
       Portal de Reportes
-      <span>Dirección de Asuntos Académicos y Registro</span>
+      <small>Dirección de Asuntos Académicos y Registro</small>
     </div>
+    <div class="header-sep"></div>
+    <span class="header-tag">DAAR</span>
   </div>
   <div style="display:flex;gap:8px;">
-    <button class="btn btn-ghost" id="btn-edit" onclick="openPasswordModal()" style="display: none;">✏️ Editar</button>
-    <button class="btn btn-accent" id="btn-save" onclick="saveChanges()" style="display:none;">⬇ Guardar y descargar</button>
-    <button class="btn btn-ghost" id="btn-cancel" onclick="cancelEdit()" style="display:none;">✕ Cancelar</button>
+    <button class="btn btn-outline" id="btn-edit" onclick="openPasswordModal()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Editar
+    </button>
+    <button class="btn btn-primary" id="btn-save" onclick="saveChanges()" style="display:none;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Guardar y descargar
+    </button>
+    <button class="btn btn-outline" id="btn-cancel" onclick="cancelEdit()" style="display:none;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      Cancelar
+    </button>
   </div>
 </header>
 
-<main>
-  <div class="page-title">Reportes de gestión</div>
-  <div class="page-sub">Haz clic en cualquier reporte para abrirlo en Google Drive</div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Universidad del Pacífico</div>
+    <h1 class="hero-title">Reportes de gestión</h1>
+    <p class="hero-sub">Accede a los reportes operativos de cada unidad. Haz clic en el reporte que necesitas para abrirlo en Google Drive.</p>
+  </div>
+</div>
 
-  <div class="edit-banner" id="edit-banner">
-    ✏️ <strong>Modo edición activo</strong> — modifica los datos y presiona "Guardar y descargar" al terminar.
+<!-- CONTENIDO -->
+<div class="content">
+
+  <!-- Banner edición -->
+  <div class="banner banner-edit" id="edit-banner">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span><strong>Modo edición activo</strong> — modifica los datos de cada reporte y presiona "Guardar y descargar" al terminar.</span>
   </div>
 
-  <div class="download-banner" id="download-banner">
+  <!-- Banner descarga -->
+  <div class="banner banner-download" id="download-banner">
     <strong>✅ ¡Archivo descargado! Sigue estos pasos para publicar los cambios:</strong>
-    <ol class="download-steps">
-      <li>Abre <strong>github.com</strong> e ingresa a tu repositorio <strong>Portal-de-Reportes-DAAR</strong></li>
-      <li>Clic en el archivo <strong>index.html</strong></li>
-      <li>Clic en el ícono del <strong>lápiz ✏️</strong> (editar)</li>
+    <ol class="banner-steps">
+      <li>Abre <strong>github.com</strong> → repositorio <strong>Portal-de-Reportes-DAAR</strong></li>
+      <li>Clic en <strong>index.html</strong> → ícono del <strong>lápiz ✏️</strong></li>
       <li>Selecciona todo (<strong>Ctrl+A</strong>) y borra</li>
-      <li>Abre el archivo descargado con el <strong>Bloc de notas</strong>, selecciona todo (<strong>Ctrl+A</strong>), copia (<strong>Ctrl+C</strong>)</li>
-      <li>Pega en GitHub (<strong>Ctrl+V</strong>) y clic en <strong>"Commit changes"</strong></li>
+      <li>Abre el archivo descargado con el <strong>Bloc de notas</strong> → Ctrl+A → Ctrl+C</li>
+      <li>Pega en GitHub (<strong>Ctrl+V</strong>) → clic en <strong>"Commit changes"</strong></li>
     </ol>
-    <span style="font-size:12px;color:#2e7d42;margin-top:2px;">En 1-2 minutos todos verán los cambios en el link.</span>
+    <span class="banner-note">En 1-2 minutos todos verán los cambios en el link.</span>
   </div>
 
-  <div class="filter-bar">
-    <button class="filter-btn active" onclick="filterArea(this,'all')">Todos</button>
-    <button class="filter-btn" onclick="filterArea(this,'Pregrado')">Pregrado</button>
-    <button class="filter-btn" onclick="filterArea(this,'Posgrado')">Posgrado</button>
-    <button class="filter-btn" onclick="filterArea(this,'Idiomas')">Idiomas</button>
-    <button class="filter-btn" onclick="filterArea(this,'Jefaturas')">Jefaturas</button>
+  <!-- Filtros -->
+  <div class="filter-row">
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterArea(this,'all')">Todos</button>
+      <button class="filter-btn" onclick="filterArea(this,'Pregrado')">Pregrado</button>
+      <button class="filter-btn" onclick="filterArea(this,'Posgrado')">Posgrado</button>
+      <button class="filter-btn" onclick="filterArea(this,'Idiomas')">Idiomas</button>
+      <button class="filter-btn" onclick="filterArea(this,'Jefaturas')">Jefaturas</button>
+    </div>
+    <span class="count-label" id="count-label"></span>
   </div>
 
-  <div id="cards-grid"><div class="report-card edit-mode">
-        <label class="edit-label">Área</label>
-        <select class="edit-field" onchange="updateBuf(1,'area',this.value)">
-          <option value="Pregrado" selected="">Pregrado</option><option value="Posgrado">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas">Jefaturas</option>
-        </select>
-        <label class="edit-label">Título</label>
-        <input class="edit-field" type="text" value="Matrícula Pregrado" oninput="updateBuf(1,'title',this.value)">
-        <label class="edit-label">Descripción</label>
-        <textarea class="edit-field" rows="2" oninput="updateBuf(1,'desc',this.value)">Reporte de matrículas activas por ciclo y carrera.</textarea>
-        <label class="edit-label">Link de Google Drive</label>
-        <input class="edit-field" type="url" value="https://drive.google.com" oninput="updateBuf(1,'link',this.value)" placeholder="https://drive.google.com/...">
-        <button class="btn btn-danger" onclick="deleteCard(1)">🗑 Eliminar</button></div><div class="report-card edit-mode">
-        <label class="edit-label">Área</label>
-        <select class="edit-field" onchange="updateBuf(2,'area',this.value)">
-          <option value="Pregrado" selected="">Pregrado</option><option value="Posgrado">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas">Jefaturas</option>
-        </select>
-        <label class="edit-label">Título</label>
-        <input class="edit-field" type="text" value="Reservas de Aulas" oninput="updateBuf(2,'title',this.value)">
-        <label class="edit-label">Descripción</label>
-        <textarea class="edit-field" rows="2" oninput="updateBuf(2,'desc',this.value)">Estado de reservas y ocupación de aulas por semana.</textarea>
-        <label class="edit-label">Link de Google Drive</label>
-        <input class="edit-field" type="url" value="https://drive.google.com" oninput="updateBuf(2,'link',this.value)" placeholder="https://drive.google.com/...">
-        <button class="btn btn-danger" onclick="deleteCard(2)">🗑 Eliminar</button></div><div class="report-card edit-mode">
-        <label class="edit-label">Área</label>
-        <select class="edit-field" onchange="updateBuf(3,'area',this.value)">
-          <option value="Pregrado">Pregrado</option><option value="Posgrado" selected="">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas">Jefaturas</option>
-        </select>
-        <label class="edit-label">Título</label>
-        <input class="edit-field" type="text" value="Matrículas Posgrado - EEPBS" oninput="updateBuf(3,'title',this.value)">
-        <label class="edit-label">Descripción</label>
-        <textarea class="edit-field" rows="2" oninput="updateBuf(3,'desc',this.value)">Seguimiento de matrícula inicial, recurrente y extraordinaria.</textarea>
-        <label class="edit-label">Link de Google Drive</label>
-        <input class="edit-field" type="url" value="https://docs.google.com/spreadsheets/d/1f2x_FC-cmna4S_rD78Y6foiaEz1L7HPV/edit?gid=159895615#gid=159895615" oninput="updateBuf(3,'link',this.value)" placeholder="https://drive.google.com/...">
-        <button class="btn btn-danger" onclick="deleteCard(3)">🗑 Eliminar</button></div><div class="report-card edit-mode">
-        <label class="edit-label">Área</label>
-        <select class="edit-field" onchange="updateBuf(4,'area',this.value)">
-          <option value="Pregrado">Pregrado</option><option value="Posgrado" selected="">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas">Jefaturas</option>
-        </select>
-        <label class="edit-label">Título</label>
-        <input class="edit-field" type="text" value="Certificaciones Educación Ejecutiva" oninput="updateBuf(4,'title',this.value)">
-        <label class="edit-label">Descripción</label>
-        <textarea class="edit-field" rows="2" oninput="updateBuf(4,'desc',this.value)">Estado de certificaciones por escuelas y subunidad.</textarea>
-        <label class="edit-label">Link de Google Drive</label>
-        <input class="edit-field" type="url" value="https://docs.google.com/spreadsheets/d/1ky3MfRn9GMsG-0JlRklybj1PDLuwcak7/edit?gid=1586913603#gid=1586913603" oninput="updateBuf(4,'link',this.value)" placeholder="https://drive.google.com/...">
-        <button class="btn btn-danger" onclick="deleteCard(4)">🗑 Eliminar</button></div><div class="report-card edit-mode">
-        <label class="edit-label">Área</label>
-        <select class="edit-field" onchange="updateBuf(5,'area',this.value)">
-          <option value="Pregrado">Pregrado</option><option value="Posgrado">Posgrado</option><option value="Idiomas" selected="">Idiomas</option><option value="Jefaturas">Jefaturas</option>
-        </select>
-        <label class="edit-label">Título</label>
-        <input class="edit-field" type="text" value="Avance Idiomas" oninput="updateBuf(5,'title',this.value)">
-        <label class="edit-label">Descripción</label>
-        <textarea class="edit-field" rows="2" oninput="updateBuf(5,'desc',this.value)">KPIs de progreso por nivel e idioma.</textarea>
-        <label class="edit-label">Link de Google Drive</label>
-        <input class="edit-field" type="url" value="https://drive.google.com" oninput="updateBuf(5,'link',this.value)" placeholder="https://drive.google.com/...">
-        <button class="btn btn-danger" onclick="deleteCard(5)">🗑 Eliminar</button></div><div class="report-card edit-mode">
-        <label class="edit-label">Área</label>
-        <select class="edit-field" onchange="updateBuf(6,'area',this.value)">
-          <option value="Pregrado">Pregrado</option><option value="Posgrado">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas" selected="">Jefaturas</option>
-        </select>
-        <label class="edit-label">Título</label>
-        <input class="edit-field" type="text" value="Horas Extra y Compensatorias" oninput="updateBuf(6,'title',this.value)">
-        <label class="edit-label">Descripción</label>
-        <textarea class="edit-field" rows="2" oninput="updateBuf(6,'desc',this.value)">Control mensual por área y colaborador.</textarea>
-        <label class="edit-label">Link de Google Drive</label>
-        <input class="edit-field" type="url" value="https://docs.google.com/spreadsheets/d/1DRUPT20OTkVEfPER12QmmxgRGA7_OsJx/edit?gid=768780792#gid=768780792" oninput="updateBuf(6,'link',this.value)" placeholder="https://drive.google.com/...">
-        <button class="btn btn-danger" onclick="deleteCard(6)">🗑 Eliminar</button></div><div class="report-card edit-mode">
-        <label class="edit-label">Área</label>
-        <select class="edit-field" onchange="updateBuf(7,'area',this.value)">
-          <option value="Pregrado">Pregrado</option><option value="Posgrado">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas" selected="">Jefaturas</option>
-        </select>
-        <label class="edit-label">Título</label>
-        <input class="edit-field" type="text" value="KPIs Generales DAAR" oninput="updateBuf(7,'title',this.value)">
-        <label class="edit-label">Descripción</label>
-        <textarea class="edit-field" rows="2" oninput="updateBuf(7,'desc',this.value)">Dashboard ejecutivo con indicadores clave de gestión.</textarea>
-        <label class="edit-label">Link de Google Drive</label>
-        <input class="edit-field" type="url" value="https://drive.google.com" oninput="updateBuf(7,'link',this.value)" placeholder="https://drive.google.com/...">
-        <button class="btn btn-danger" onclick="deleteCard(7)">🗑 Eliminar</button></div><div class="report-card edit-mode">
-        <label class="edit-label">Área</label>
-        <select class="edit-field" onchange="updateBuf(8,'area',this.value)">
-          <option value="Pregrado">Pregrado</option><option value="Posgrado" selected="">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas">Jefaturas</option>
-        </select>
-        <label class="edit-label">Título</label>
-        <input class="edit-field" type="text" value="Programación de Clases" oninput="updateBuf(8,'title',this.value)">
-        <label class="edit-label">Descripción</label>
-        <textarea class="edit-field" rows="2" oninput="updateBuf(8,'desc',this.value)">Estado de los registros de solicitudes de programación de clase.</textarea>
-        <label class="edit-label">Link de Google Drive</label>
-        <input class="edit-field" type="url" value="https://docs.google.com/spreadsheets/d/1HE39C9m4n0Uq5-KFokusBeJob7py9kl7/edit?gid=2009445397#gid=2009445397" oninput="updateBuf(8,'link',this.value)" placeholder="https://drive.google.com/...">
-        <button class="btn btn-danger" onclick="deleteCard(8)">🗑 Eliminar</button></div><div class="add-card-placeholder"><div style="font-size:28px;opacity:0.4;">＋</div><span>Agregar reporte</span></div></div>
+  <!-- Grid -->
+  <div id="cards-grid"></div>
 
+  <!-- Footer -->
   <div class="footer-row">
-    <button class="btn btn-light" id="btn-add" onclick="openAddModal()" style="display:none;">+ Agregar reporte</button>
-    <div class="footer-count" id="footer-count">8 reportes · DAAR UP</div>
+    <button class="btn btn-light" id="btn-add" onclick="openAddModal()" style="display:none;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Agregar reporte
+    </button>
+    <span class="footer-meta" id="footer-meta"></span>
   </div>
-</main>
+</div>
 
 <!-- Modal: contraseña -->
 <div class="modal-overlay" id="modal-password">
   <div class="modal">
     <div class="modal-title">🔒 Acceso de edición</div>
     <label class="edit-label">Contraseña</label>
-    <input class="edit-field" id="input-password" type="password" placeholder="Ingresa tu contraseña" onkeydown="if(event.key==='Enter') checkPassword()">
+    <input class="edit-field" id="input-password" type="password" placeholder="Ingresa tu contraseña"
+      onkeydown="if(event.key==='Enter') checkPassword()">
     <div class="modal-error" id="password-error">Contraseña incorrecta. Inténtalo de nuevo.</div>
     <div class="modal-actions">
       <button class="btn btn-light" onclick="closeModal('modal-password')">Cancelar</button>
-      <button class="btn btn-accent" onclick="checkPassword()">Ingresar</button>
+      <button class="btn" style="background:var(--navy);color:#fff;border-color:var(--navy);" onclick="checkPassword()">Ingresar</button>
     </div>
   </div>
 </div>
 
-<!-- Modal: agregar reporte -->
+<!-- Modal: agregar -->
 <div class="modal-overlay" id="modal-add">
   <div class="modal">
     <div class="modal-title">Nuevo reporte</div>
@@ -317,12 +541,12 @@
     <label class="edit-label">Título</label>
     <input class="edit-field" id="new-title" type="text" placeholder="Ej. Matrícula Pregrado">
     <label class="edit-label">Descripción breve</label>
-    <textarea class="edit-field" id="new-desc" rows="2" placeholder="Ej. Reporte de matrículas activas."></textarea>
+    <textarea class="edit-field" id="new-desc" rows="2" placeholder="Ej. Reporte de matrículas activas por ciclo."></textarea>
     <label class="edit-label">Link de Google Drive</label>
     <input class="edit-field" id="new-link" type="url" placeholder="https://drive.google.com/...">
     <div class="modal-actions">
       <button class="btn btn-light" onclick="closeModal('modal-add')">Cancelar</button>
-      <button class="btn btn-accent" onclick="confirmAdd()">Agregar</button>
+      <button class="btn" style="background:var(--navy);color:#fff;border-color:var(--navy);" onclick="confirmAdd()">Agregar</button>
     </div>
   </div>
 </div>
@@ -333,23 +557,23 @@
 const PASSWORD = 'Covid26@';
 
 const AREA_STYLE = {
-  Pregrado:  { bg:'#e6f0fb', color:'#0c3a6e' },
-  Posgrado:  { bg:'#eeedfe', color:'#3c3489' },
-  Idiomas:   { bg:'#eaf3de', color:'#27500a' },
-  Jefaturas: { bg:'#faeeda', color:'#633806' },
+  Pregrado:  { bg:'#E8EFF9', color:'#002F6C' },
+  Posgrado:  { bg:'#E4EBF7', color:'#00256A' },
+  Idiomas:   { bg:'#D8E8F5', color:'#004A8C' },
+  Jefaturas: { bg:'#E0EAFA', color:'#1A3A6E' },
 };
 
 // ══ DATOS DE REPORTES — se reemplaza automáticamente al descargar ══
 let reports = [
-  { id:1, area:'Pregrado', title:'Matrícula Pregrado', desc:'Reporte de matrículas activas por ciclo y carrera.', link:'https://drive.google.com' },
-  { id:2, area:'Pregrado', title:'Reservas de Aulas', desc:'Estado de reservas y ocupación de aulas por semana.', link:'https://drive.google.com' },
-  { id:3, area:'Posgrado', title:'Matrículas Posgrado - EEPBS', desc:'Seguimiento de matrícula inicial, recurrente y extraordinaria.', link:'https://docs.google.com/spreadsheets/d/1f2x_FC-cmna4S_rD78Y6foiaEz1L7HPV/edit?gid=159895615#gid=159895615' },
-  { id:4, area:'Posgrado', title:'Certificaciones Educación Ejecutiva', desc:'Estado de certificaciones por escuelas y subunidad.', link:'https://docs.google.com/spreadsheets/d/1ky3MfRn9GMsG-0JlRklybj1PDLuwcak7/edit?gid=1586913603#gid=1586913603' },
-  { id:5, area:'Idiomas', title:'Avance Idiomas', desc:'KPIs de progreso por nivel e idioma.', link:'https://drive.google.com' },
-  { id:6, area:'Jefaturas', title:'Horas Extra y Compensatorias', desc:'Control mensual por área y colaborador.', link:'https://docs.google.com/spreadsheets/d/1DRUPT20OTkVEfPER12QmmxgRGA7_OsJx/edit?gid=768780792#gid=768780792' },
-  { id:7, area:'Jefaturas', title:'KPIs Generales DAAR', desc:'Dashboard ejecutivo con indicadores clave de gestión.', link:'https://drive.google.com' },
-  { id:8, area:'Posgrado', title:'Programación de Clases', desc:'Estado de los registros de solicitudes de programación de clase.', link:'https://docs.google.com/spreadsheets/d/1HE39C9m4n0Uq5-KFokusBeJob7py9kl7/edit?gid=2009445397#gid=2009445397' }
-]
+  { id:1, area:'Pregrado',  title:'Matrícula Pregrado',           desc:'Reporte de matrículas activas por ciclo y carrera.',            link:'https://drive.google.com' },
+  { id:2, area:'Pregrado',  title:'Reservas de Aulas',            desc:'Estado de reservas y ocupación de aulas por semana.',           link:'https://drive.google.com' },
+  { id:3, area:'Posgrado',  title:'Matrículas Posgrado',          desc:'Seguimiento de matrícula inicial, recurrente y extraordinaria.',link:'https://drive.google.com' },
+  { id:4, area:'Posgrado',  title:'Certificaciones EGP',          desc:'Estado de certificaciones por empresa y subunidad.',           link:'https://drive.google.com' },
+  { id:5, area:'Idiomas',   title:'Avance Idiomas',               desc:'KPIs de progreso por nivel e idioma.',                         link:'https://drive.google.com' },
+  { id:6, area:'Jefaturas', title:'Horas Extra y Compensatorias', desc:'Control mensual por área y colaborador.',                      link:'https://drive.google.com' },
+  { id:7, area:'Jefaturas', title:'KPIs Generales DAAR',          desc:'Dashboard ejecutivo con indicadores clave de gestión.',        link:'https://drive.google.com' },
+  { id:8, area:'Posgrado',  title:'Certificaciones PBS',          desc:'Reporte de empresas prioritarias y avance de programas.',      link:'https://drive.google.com' },
+];
 // ══ FIN DATOS ══
 
 let editMode = false;
@@ -358,28 +582,35 @@ let editBuffer = [];
 
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function escJs(s){ return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n'); }
-
 function getFiltered(){ return currentFilter==='all' ? reports : reports.filter(r=>r.area===currentFilter); }
 
 function renderCards(){
   const grid = document.getElementById('cards-grid');
   const filtered = getFiltered();
-  document.getElementById('footer-count').textContent =
-    filtered.length+' reporte'+(filtered.length!==1?'s':'')+' · DAAR UP';
-  grid.innerHTML='';
-  filtered.forEach(r=>{
-    const st=AREA_STYLE[r.area]||AREA_STYLE['Jefaturas'];
-    const card=document.createElement('div');
-    card.className='report-card'+(editMode?' edit-mode':'');
+  const n = filtered.length;
+  document.getElementById('count-label').textContent = n + ' reporte' + (n!==1?'s':'');
+  document.getElementById('footer-meta').textContent = n + ' reporte' + (n!==1?'s':'') + ' · DAAR — Universidad del Pacífico';
+  grid.innerHTML = '';
+
+  filtered.forEach((r, i) => {
+    const st = AREA_STYLE[r.area] || AREA_STYLE['Jefaturas'];
+    const card = document.createElement('div');
+    card.className = 'report-card' + (editMode ? ' edit-mode' : '');
+    card.style.animationDelay = (i * 40) + 'ms';
+
     if(!editMode){
-      card.innerHTML=`
+      card.innerHTML = `
         <span class="area-badge" style="background:${st.bg};color:${st.color};">${r.area}</span>
         <div class="card-title">${esc(r.title)}</div>
         <div class="card-desc">${esc(r.desc)}</div>
-        <a class="card-open-btn" href="${esc(r.link)}" target="_blank" rel="noopener">↗ Abrir reporte</a>`;
+        <div class="card-divider"></div>
+        <a class="card-open-btn" href="${esc(r.link)}" target="_blank" rel="noopener">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Abrir reporte
+        </a>`;
     } else {
-      const buf=editBuffer.find(x=>x.id===r.id)||r;
-      card.innerHTML=`
+      const buf = editBuffer.find(x=>x.id===r.id) || r;
+      card.innerHTML = `
         <label class="edit-label">Área</label>
         <select class="edit-field" onchange="updateBuf(${r.id},'area',this.value)">
           ${Object.keys(AREA_STYLE).map(a=>`<option value="${a}"${buf.area===a?' selected':''}>${a}</option>`).join('')}
@@ -390,15 +621,19 @@ function renderCards(){
         <textarea class="edit-field" rows="2" oninput="updateBuf(${r.id},'desc',this.value)">${esc(buf.desc)}</textarea>
         <label class="edit-label">Link de Google Drive</label>
         <input class="edit-field" type="url" value="${esc(buf.link)}" oninput="updateBuf(${r.id},'link',this.value)" placeholder="https://drive.google.com/...">
-        <button class="btn btn-danger" onclick="deleteCard(${r.id})">🗑 Eliminar</button>`;
+        <button class="btn btn-danger" onclick="deleteCard(${r.id})">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          Eliminar
+        </button>`;
     }
     grid.appendChild(card);
   });
+
   if(editMode){
-    const ph=document.createElement('div');
-    ph.className='add-card-placeholder';
-    ph.onclick=openAddModal;
-    ph.innerHTML=`<div style="font-size:28px;opacity:0.4;">＋</div><span>Agregar reporte</span>`;
+    const ph = document.createElement('div');
+    ph.className = 'add-placeholder';
+    ph.onclick = openAddModal;
+    ph.innerHTML = `<div class="add-plus">+</div><span>Agregar reporte</span>`;
     grid.appendChild(ph);
   }
 }
@@ -413,7 +648,7 @@ function openPasswordModal(){
   document.getElementById('input-password').value='';
   document.getElementById('password-error').classList.remove('visible');
   document.getElementById('modal-password').classList.add('open');
-  setTimeout(()=>document.getElementById('input-password').focus(),100);
+  setTimeout(()=>document.getElementById('input-password').focus(),120);
 }
 function checkPassword(){
   if(document.getElementById('input-password').value===PASSWORD){
@@ -438,58 +673,45 @@ function startEdit(){
 }
 
 function saveChanges(){
-  // 1. Aplicar buffer a reports
   editBuffer.forEach(buf=>{
     const idx=reports.findIndex(r=>r.id===buf.id);
     if(idx!==-1) reports[idx]={...buf};
   });
 
-  // 2. Construir bloque de datos actualizado
   const dataBlock = reports.map(r=>
     `  { id:${r.id}, area:'${escJs(r.area)}', title:'${escJs(r.title)}', desc:'${escJs(r.desc)}', link:'${escJs(r.link)}' }`
   ).join(',\n');
 
-  // 3. Leer el HTML fuente original (sin estado de edición)
-  //    Usamos la plantilla embebida en el propio script para reconstruir
-  //    el archivo limpio, reemplazando solo el bloque de datos.
   const marker1 = '// \u2550\u2550 DATOS DE REPORTES \u2014 se reemplaza autom\u00e1ticamente al descargar \u2550\u2550\nlet reports = [';
   const marker2 = '\n// \u2550\u2550 FIN DATOS \u2550\u2550';
 
   let src = '<!DOCTYPE html>' + document.documentElement.outerHTML;
 
-  // Forzar vista normal en el HTML descargado:
-  // quitar clases 'visible' del edit-banner
-  src = src.replace(/(<div class="edit-banner[^"]*") id="edit-banner"/g, '$1 id="edit-banner"');
-  src = src.replace('class="edit-banner visible"', 'class="edit-banner"');
-  src = src.replace('class="download-banner"', 'class="download-banner"');
-
-  // Asegurar que los botones de header estén en estado normal
+  // Forzar vista limpia en el HTML descargado
+  src = src.replace('class="banner banner-edit visible"', 'class="banner banner-edit"');
+  src = src.replace('class="banner banner-download visible"', 'class="banner banner-download"');
   src = src.replace(/(<button[^>]+id="btn-edit"[^>]*) style="display:none;"/g, '$1');
   src = src.replace(/(<button[^>]+id="btn-save"[^>]*) style=""/g, '$1 style="display:none;"');
   src = src.replace(/(<button[^>]+id="btn-cancel"[^>]*) style=""/g, '$1 style="display:none;"');
   src = src.replace(/(<button[^>]+id="btn-add"[^>]*) style=""/g, '$1 style="display:none;"');
 
-  // Reemplazar bloque de datos
   const i1 = src.indexOf(marker1);
   const i2 = src.indexOf(marker2, i1);
   if(i1!==-1 && i2>i1){
     src = src.slice(0,i1) + marker1 + '\n' + dataBlock + '\n]' + src.slice(i2);
   }
 
-  // 4. Descargar
-  const blob=new Blob([src],{type:'text/html;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
+  const blob = new Blob([src],{type:'text/html;charset=utf-8'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
   a.href=url; a.download='index.html'; a.click();
   URL.revokeObjectURL(url);
 
-  // 5. Salir del modo edición y mostrar instrucciones
   exitEdit();
   document.getElementById('download-banner').classList.add('visible');
 }
 
 function cancelEdit(){ exitEdit(); }
-
 function exitEdit(){
   editMode=false; editBuffer=[];
   document.getElementById('btn-edit').style.display='';
@@ -515,11 +737,9 @@ function filterArea(btn,area){
 }
 
 function openAddModal(){
-  document.getElementById('new-title').value='';
-  document.getElementById('new-desc').value='';
-  document.getElementById('new-link').value='';
+  ['new-title','new-desc','new-link'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('modal-add').classList.add('open');
-  setTimeout(()=>document.getElementById('new-title').focus(),100);
+  setTimeout(()=>document.getElementById('new-title').focus(),120);
 }
 function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 function confirmAdd(){
@@ -538,6 +758,5 @@ document.querySelectorAll('.modal-overlay').forEach(m=>{
 
 renderCards();
 </script>
-
-
-</body></html>
+</body>
+</html>
