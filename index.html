@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
+<!DOCTYPE html><html lang="es"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portal de Reportes — DAAR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -163,7 +161,7 @@
     </div>
   </div>
   <div style="display:flex;gap:8px;">
-    <button class="btn btn-ghost" id="btn-edit" onclick="openPasswordModal()">✏️ Editar</button>
+    <button class="btn btn-ghost" id="btn-edit" onclick="openPasswordModal()" style="display: none;">✏️ Editar</button>
     <button class="btn btn-accent" id="btn-save" onclick="saveChanges()" style="display:none;">⬇ Guardar y descargar</button>
     <button class="btn btn-ghost" id="btn-cancel" onclick="cancelEdit()" style="display:none;">✕ Cancelar</button>
   </div>
@@ -198,11 +196,99 @@
     <button class="filter-btn" onclick="filterArea(this,'Jefaturas')">Jefaturas</button>
   </div>
 
-  <div id="cards-grid"></div>
+  <div id="cards-grid"><div class="report-card edit-mode">
+        <label class="edit-label">Área</label>
+        <select class="edit-field" onchange="updateBuf(1,'area',this.value)">
+          <option value="Pregrado" selected="">Pregrado</option><option value="Posgrado">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas">Jefaturas</option>
+        </select>
+        <label class="edit-label">Título</label>
+        <input class="edit-field" type="text" value="Matrícula Pregrado" oninput="updateBuf(1,'title',this.value)">
+        <label class="edit-label">Descripción</label>
+        <textarea class="edit-field" rows="2" oninput="updateBuf(1,'desc',this.value)">Reporte de matrículas activas por ciclo y carrera.</textarea>
+        <label class="edit-label">Link de Google Drive</label>
+        <input class="edit-field" type="url" value="https://drive.google.com" oninput="updateBuf(1,'link',this.value)" placeholder="https://drive.google.com/...">
+        <button class="btn btn-danger" onclick="deleteCard(1)">🗑 Eliminar</button></div><div class="report-card edit-mode">
+        <label class="edit-label">Área</label>
+        <select class="edit-field" onchange="updateBuf(2,'area',this.value)">
+          <option value="Pregrado" selected="">Pregrado</option><option value="Posgrado">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas">Jefaturas</option>
+        </select>
+        <label class="edit-label">Título</label>
+        <input class="edit-field" type="text" value="Reservas de Aulas" oninput="updateBuf(2,'title',this.value)">
+        <label class="edit-label">Descripción</label>
+        <textarea class="edit-field" rows="2" oninput="updateBuf(2,'desc',this.value)">Estado de reservas y ocupación de aulas por semana.</textarea>
+        <label class="edit-label">Link de Google Drive</label>
+        <input class="edit-field" type="url" value="https://drive.google.com" oninput="updateBuf(2,'link',this.value)" placeholder="https://drive.google.com/...">
+        <button class="btn btn-danger" onclick="deleteCard(2)">🗑 Eliminar</button></div><div class="report-card edit-mode">
+        <label class="edit-label">Área</label>
+        <select class="edit-field" onchange="updateBuf(3,'area',this.value)">
+          <option value="Pregrado">Pregrado</option><option value="Posgrado" selected="">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas">Jefaturas</option>
+        </select>
+        <label class="edit-label">Título</label>
+        <input class="edit-field" type="text" value="Matrículas Posgrado - EEPBS" oninput="updateBuf(3,'title',this.value)">
+        <label class="edit-label">Descripción</label>
+        <textarea class="edit-field" rows="2" oninput="updateBuf(3,'desc',this.value)">Seguimiento de matrícula inicial, recurrente y extraordinaria.</textarea>
+        <label class="edit-label">Link de Google Drive</label>
+        <input class="edit-field" type="url" value="https://docs.google.com/spreadsheets/d/1f2x_FC-cmna4S_rD78Y6foiaEz1L7HPV/edit?gid=159895615#gid=159895615" oninput="updateBuf(3,'link',this.value)" placeholder="https://drive.google.com/...">
+        <button class="btn btn-danger" onclick="deleteCard(3)">🗑 Eliminar</button></div><div class="report-card edit-mode">
+        <label class="edit-label">Área</label>
+        <select class="edit-field" onchange="updateBuf(4,'area',this.value)">
+          <option value="Pregrado">Pregrado</option><option value="Posgrado" selected="">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas">Jefaturas</option>
+        </select>
+        <label class="edit-label">Título</label>
+        <input class="edit-field" type="text" value="Certificaciones Educación Ejecutiva" oninput="updateBuf(4,'title',this.value)">
+        <label class="edit-label">Descripción</label>
+        <textarea class="edit-field" rows="2" oninput="updateBuf(4,'desc',this.value)">Estado de certificaciones por escuelas y subunidad.</textarea>
+        <label class="edit-label">Link de Google Drive</label>
+        <input class="edit-field" type="url" value="https://docs.google.com/spreadsheets/d/1ky3MfRn9GMsG-0JlRklybj1PDLuwcak7/edit?gid=1586913603#gid=1586913603" oninput="updateBuf(4,'link',this.value)" placeholder="https://drive.google.com/...">
+        <button class="btn btn-danger" onclick="deleteCard(4)">🗑 Eliminar</button></div><div class="report-card edit-mode">
+        <label class="edit-label">Área</label>
+        <select class="edit-field" onchange="updateBuf(5,'area',this.value)">
+          <option value="Pregrado">Pregrado</option><option value="Posgrado">Posgrado</option><option value="Idiomas" selected="">Idiomas</option><option value="Jefaturas">Jefaturas</option>
+        </select>
+        <label class="edit-label">Título</label>
+        <input class="edit-field" type="text" value="Avance Idiomas" oninput="updateBuf(5,'title',this.value)">
+        <label class="edit-label">Descripción</label>
+        <textarea class="edit-field" rows="2" oninput="updateBuf(5,'desc',this.value)">KPIs de progreso por nivel e idioma.</textarea>
+        <label class="edit-label">Link de Google Drive</label>
+        <input class="edit-field" type="url" value="https://drive.google.com" oninput="updateBuf(5,'link',this.value)" placeholder="https://drive.google.com/...">
+        <button class="btn btn-danger" onclick="deleteCard(5)">🗑 Eliminar</button></div><div class="report-card edit-mode">
+        <label class="edit-label">Área</label>
+        <select class="edit-field" onchange="updateBuf(6,'area',this.value)">
+          <option value="Pregrado">Pregrado</option><option value="Posgrado">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas" selected="">Jefaturas</option>
+        </select>
+        <label class="edit-label">Título</label>
+        <input class="edit-field" type="text" value="Horas Extra y Compensatorias" oninput="updateBuf(6,'title',this.value)">
+        <label class="edit-label">Descripción</label>
+        <textarea class="edit-field" rows="2" oninput="updateBuf(6,'desc',this.value)">Control mensual por área y colaborador.</textarea>
+        <label class="edit-label">Link de Google Drive</label>
+        <input class="edit-field" type="url" value="https://docs.google.com/spreadsheets/d/1DRUPT20OTkVEfPER12QmmxgRGA7_OsJx/edit?gid=768780792#gid=768780792" oninput="updateBuf(6,'link',this.value)" placeholder="https://drive.google.com/...">
+        <button class="btn btn-danger" onclick="deleteCard(6)">🗑 Eliminar</button></div><div class="report-card edit-mode">
+        <label class="edit-label">Área</label>
+        <select class="edit-field" onchange="updateBuf(7,'area',this.value)">
+          <option value="Pregrado">Pregrado</option><option value="Posgrado">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas" selected="">Jefaturas</option>
+        </select>
+        <label class="edit-label">Título</label>
+        <input class="edit-field" type="text" value="KPIs Generales DAAR" oninput="updateBuf(7,'title',this.value)">
+        <label class="edit-label">Descripción</label>
+        <textarea class="edit-field" rows="2" oninput="updateBuf(7,'desc',this.value)">Dashboard ejecutivo con indicadores clave de gestión.</textarea>
+        <label class="edit-label">Link de Google Drive</label>
+        <input class="edit-field" type="url" value="https://drive.google.com" oninput="updateBuf(7,'link',this.value)" placeholder="https://drive.google.com/...">
+        <button class="btn btn-danger" onclick="deleteCard(7)">🗑 Eliminar</button></div><div class="report-card edit-mode">
+        <label class="edit-label">Área</label>
+        <select class="edit-field" onchange="updateBuf(8,'area',this.value)">
+          <option value="Pregrado">Pregrado</option><option value="Posgrado" selected="">Posgrado</option><option value="Idiomas">Idiomas</option><option value="Jefaturas">Jefaturas</option>
+        </select>
+        <label class="edit-label">Título</label>
+        <input class="edit-field" type="text" value="Programación de Clases" oninput="updateBuf(8,'title',this.value)">
+        <label class="edit-label">Descripción</label>
+        <textarea class="edit-field" rows="2" oninput="updateBuf(8,'desc',this.value)">Estado de los registros de solicitudes de programación de clase.</textarea>
+        <label class="edit-label">Link de Google Drive</label>
+        <input class="edit-field" type="url" value="https://docs.google.com/spreadsheets/d/1HE39C9m4n0Uq5-KFokusBeJob7py9kl7/edit?gid=2009445397#gid=2009445397" oninput="updateBuf(8,'link',this.value)" placeholder="https://drive.google.com/...">
+        <button class="btn btn-danger" onclick="deleteCard(8)">🗑 Eliminar</button></div><div class="add-card-placeholder"><div style="font-size:28px;opacity:0.4;">＋</div><span>Agregar reporte</span></div></div>
 
   <div class="footer-row">
     <button class="btn btn-light" id="btn-add" onclick="openAddModal()" style="display:none;">+ Agregar reporte</button>
-    <div class="footer-count" id="footer-count"></div>
+    <div class="footer-count" id="footer-count">8 reportes · DAAR UP</div>
   </div>
 </main>
 
@@ -211,8 +297,7 @@
   <div class="modal">
     <div class="modal-title">🔒 Acceso de edición</div>
     <label class="edit-label">Contraseña</label>
-    <input class="edit-field" id="input-password" type="password" placeholder="Ingresa tu contraseña"
-      onkeydown="if(event.key==='Enter') checkPassword()">
+    <input class="edit-field" id="input-password" type="password" placeholder="Ingresa tu contraseña" onkeydown="if(event.key==='Enter') checkPassword()">
     <div class="modal-error" id="password-error">Contraseña incorrecta. Inténtalo de nuevo.</div>
     <div class="modal-actions">
       <button class="btn btn-light" onclick="closeModal('modal-password')">Cancelar</button>
@@ -256,15 +341,15 @@ const AREA_STYLE = {
 
 // ══ DATOS DE REPORTES — se reemplaza automáticamente al descargar ══
 let reports = [
-  { id:1, area:'Pregrado',  title:'Matrícula Pregrado',           desc:'Reporte de matrículas activas por ciclo y carrera.',            link:'https://drive.google.com' },
-  { id:2, area:'Pregrado',  title:'Reservas de Aulas',            desc:'Estado de reservas y ocupación de aulas por semana.',           link:'https://drive.google.com' },
-  { id:3, area:'Posgrado',  title:'Matrículas Posgrado',          desc:'Seguimiento de matrícula inicial, recurrente y extraordinaria.',link:'https://drive.google.com' },
-  { id:4, area:'Posgrado',  title:'Certificaciones EGP',          desc:'Estado de certificaciones por empresa y subunidad.',           link:'https://drive.google.com' },
-  { id:5, area:'Idiomas',   title:'Avance Idiomas',               desc:'KPIs de progreso por nivel e idioma.',                         link:'https://drive.google.com' },
-  { id:6, area:'Jefaturas', title:'Horas Extra y Compensatorias', desc:'Control mensual por área y colaborador.',                      link:'https://drive.google.com' },
-  { id:7, area:'Jefaturas', title:'KPIs Generales DAAR',          desc:'Dashboard ejecutivo con indicadores clave de gestión.',        link:'https://drive.google.com' },
-  { id:8, area:'Posgrado',  title:'Certificaciones PBS',          desc:'Reporte de empresas prioritarias y avance de programas.',      link:'https://drive.google.com' },
-];
+  { id:1, area:'Pregrado', title:'Matrícula Pregrado', desc:'Reporte de matrículas activas por ciclo y carrera.', link:'https://drive.google.com' },
+  { id:2, area:'Pregrado', title:'Reservas de Aulas', desc:'Estado de reservas y ocupación de aulas por semana.', link:'https://drive.google.com' },
+  { id:3, area:'Posgrado', title:'Matrículas Posgrado - EEPBS', desc:'Seguimiento de matrícula inicial, recurrente y extraordinaria.', link:'https://docs.google.com/spreadsheets/d/1f2x_FC-cmna4S_rD78Y6foiaEz1L7HPV/edit?gid=159895615#gid=159895615' },
+  { id:4, area:'Posgrado', title:'Certificaciones Educación Ejecutiva', desc:'Estado de certificaciones por escuelas y subunidad.', link:'https://docs.google.com/spreadsheets/d/1ky3MfRn9GMsG-0JlRklybj1PDLuwcak7/edit?gid=1586913603#gid=1586913603' },
+  { id:5, area:'Idiomas', title:'Avance Idiomas', desc:'KPIs de progreso por nivel e idioma.', link:'https://drive.google.com' },
+  { id:6, area:'Jefaturas', title:'Horas Extra y Compensatorias', desc:'Control mensual por área y colaborador.', link:'https://docs.google.com/spreadsheets/d/1DRUPT20OTkVEfPER12QmmxgRGA7_OsJx/edit?gid=768780792#gid=768780792' },
+  { id:7, area:'Jefaturas', title:'KPIs Generales DAAR', desc:'Dashboard ejecutivo con indicadores clave de gestión.', link:'https://drive.google.com' },
+  { id:8, area:'Posgrado', title:'Programación de Clases', desc:'Estado de los registros de solicitudes de programación de clase.', link:'https://docs.google.com/spreadsheets/d/1HE39C9m4n0Uq5-KFokusBeJob7py9kl7/edit?gid=2009445397#gid=2009445397' }
+]
 // ══ FIN DATOS ══
 
 let editMode = false;
@@ -376,7 +461,7 @@ function saveChanges(){
   // quitar clases 'visible' del edit-banner
   src = src.replace(/(<div class="edit-banner[^"]*") id="edit-banner"/g, '$1 id="edit-banner"');
   src = src.replace('class="edit-banner visible"', 'class="edit-banner"');
-  src = src.replace('class="download-banner visible"', 'class="download-banner"');
+  src = src.replace('class="download-banner"', 'class="download-banner"');
 
   // Asegurar que los botones de header estén en estado normal
   src = src.replace(/(<button[^>]+id="btn-edit"[^>]*) style="display:none;"/g, '$1');
@@ -453,5 +538,6 @@ document.querySelectorAll('.modal-overlay').forEach(m=>{
 
 renderCards();
 </script>
-</body>
-</html>
+
+
+</body></html>
